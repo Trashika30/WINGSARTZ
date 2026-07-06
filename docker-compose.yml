@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: wingsartz_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: wingsartz_db
+      POSTGRES_USER: wingsartz_user
+      POSTGRES_PASSWORD: wingsartz_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  chromadb:
+    image: chromadb/chroma:0.4.24
+    container_name: wingsartz_chromadb
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/.chroma/index
+
+volumes:
+  postgres_data:
+  chroma_data:

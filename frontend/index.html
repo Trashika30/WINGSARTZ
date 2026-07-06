@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WingsArtz | Custom Portrait Painting & Handmade Gifts</title>
+  <meta name="description" content="WingsArtz - Premium handmade custom portrait paintings and gift items. Upload your photo and let our artists bring your memories to life.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --pink: #F68ACD;
+      --blush: #FCDAF3;
+      --gold: #E5A93B;
+      --charcoal: #2D2529;
+      --cream: #FFF5FA;
+      --white: #ffffff;
+      --gray: #6B7280;
+      --success: #10B981;
+      --error: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Outfit', sans-serif; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--blush);
+      padding: 0 2rem;
+    }
+    .nav-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+    .nav-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--charcoal); }
+    .nav-brand span { color: var(--pink); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--charcoal); font-weight: 500; font-size: 0.95rem; transition: color 0.2s; cursor: pointer; }
+    .nav-links a:hover, .nav-links a.active { color: var(--pink); }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: var(--pink); color: white; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(246,138,205,0.4); }
+    .btn-outline { background: transparent; color: var(--charcoal); border: 2px solid var(--blush); }
+    .btn-outline:hover { border-color: var(--pink); color: var(--pink); }
+    .btn-gold { background: var(--gold); color: white; }
+    .btn-gold:hover { opacity: 0.9; }
+
+    /* ─── MAIN ─── */
+    main { max-width: 1280px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+
+    /* ─── TABS ─── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── HERO ─── */
+    .hero {
+      border-radius: 2rem;
+      background: linear-gradient(135deg, #fff0f9 0%, var(--cream) 50%, #fff8ec 100%);
+      border: 1px solid var(--blush);
+      padding: 4rem 3rem;
+      display: flex; gap: 3rem; align-items: center;
+      margin-bottom: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -50%; right: -10%;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(246,138,205,0.12) 0%, transparent 70%);
+    }
+    .hero-text { flex: 1; z-index: 1; }
+    .hero-badge {
+      display: inline-block; padding: 0.4rem 1rem; border-radius: 999px;
+      background: var(--blush); color: var(--pink); font-weight: 700;
+      font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1rem; color: var(--charcoal); }
+    .hero h1 em { color: var(--pink); font-style: normal; }
+    .hero p { color: var(--gray); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-img {
+      width: 380px; height: 380px; border-radius: 2rem;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--gold) 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(246,138,205,0.3);
+    }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 2rem; }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: white; border: 1px solid var(--blush);
+      border-radius: 1.25rem; padding: 1.5rem; text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(246,138,205,0.15); }
+    .stat-card .stat-num { font-size: 1.75rem; font-weight: 900; color: var(--pink); font-family: 'Outfit', sans-serif; }
+    .stat-card .stat-label { color: var(--gray); font-size: 0.82rem; font-weight: 600; margin-top: 0.25rem; }
+
+    /* ─── SECTION TITLE ─── */
+    .section-title { font-size: 1.75rem; font-weight: 800; color: var(--charcoal); margin-bottom: 1.5rem; }
+    .section-title span { color: var(--pink); }
+
+    /* ─── CARDS GRID ─── */
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .product-card {
+      background: white; border: 1px solid var(--blush); border-radius: 1.5rem;
+      overflow: hidden; transition: all 0.3s;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(246,138,205,0.2); }
+    .product-card .card-img { height: 220px; overflow: hidden; }
+    .product-card .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .product-card:hover .card-img img { transform: scale(1.07); }
+    .product-card .card-body { padding: 1.5rem; }
+    .card-tag { font-size: 0.78rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; }
+    .card-body h3 { font-size: 1.1rem; font-weight: 700; margin: 0.4rem 0 0.5rem; }
+    .card-body p { color: var(--gray); font-size: 0.875rem; line-height: 1.5; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+    .card-price { font-size: 1.4rem; font-weight: 900; color: var(--charcoal); }
+    .card-action { color: var(--pink); font-weight: 700; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; border: none; background: none; }
+    .card-action:hover { gap: 8px; }
+
+    /* ─── GALLERY ─── */
+    .gallery-grid {
+      columns: 3; gap: 1.25rem;
+    }
+    .gallery-item {
+      break-inside: avoid; margin-bottom: 1.25rem;
+      background: white; border: 1px solid var(--blush);
+      border-radius: 1.25rem; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery-item:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+    .gallery-item img { width: 100%; display: block; }
+    .gallery-item .gallery-info { padding: 1rem 1.25rem; }
+    .gallery-item .gallery-info h4 { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .gallery-item .gallery-info p { color: var(--gold); font-weight: 700; font-size: 0.875rem; }
+
+    /* ─── ORDER FORM ─── */
+    .order-card {
+      background: white; border-radius: 2rem; border: 1px solid var(--blush);
+      overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+    }
+    .order-header {
+      background: linear-gradient(135deg, var(--pink), var(--blush));
+      padding: 2rem 2.5rem; color: var(--charcoal);
+    }
+    .order-header h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .order-header p { opacity: 0.75; font-size: 0.95rem; }
+    .order-body { padding: 2.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label { font-size: 0.82rem; font-weight: 700; color: var(--charcoal); text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.85rem 1rem; border-radius: 0.875rem;
+      border: 1.5px solid var(--blush); background: white;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s; outline: none; width: 100%;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--pink); }
+    .form-group .hint { font-size: 0.78rem; color: var(--gray); }
+
+    /* ─── FILE UPLOAD ─── */
+    .upload-zone {
+      border: 2px dashed rgba(246,138,205,0.4); border-radius: 1.25rem;
+      height: 220px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem;
+      background: rgba(255,245,250,0.5); cursor: pointer;
+      transition: all 0.2s; position: relative;
+    }
+    .upload-zone:hover { border-color: var(--pink); background: rgba(252,218,243,0.2); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-zone .upload-icon { font-size: 2.5rem; color: var(--pink); }
+    .upload-zone .upload-text { font-weight: 600; color: var(--charcoal); }
+    .upload-zone .upload-hint { font-size: 0.8rem; color: var(--gray); }
+    .upload-preview { position: absolute; inset: 8px; border-radius: 1rem; overflow: hidden; display: none; }
+    .upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-preview .clear-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.6); color: white; border: none;
+      border-radius: 50%; width: 28px; height: 28px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ─── PRICE BAR ─── */
+    .price-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--cream); border: 1.5px solid var(--blush);
+      border-radius: 1.25rem; padding: 1.5rem 2rem;
+    }
+    .price-bar .price-label { color: var(--gray); font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .price-bar .price-amount { font-size: 2.25rem; font-weight: 900; color: var(--charcoal); }
+
+    /* ─── TRACKING ─── */
+    .track-card {
+      max-width: 560px; margin: 0 auto;
+      background: white; border: 1px solid var(--blush); border-radius: 2rem;
+      padding: 2.5rem; box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+    }
+    .track-card h2 { text-align: center; margin-bottom: 0.5rem; }
+    .track-card p { text-align: center; color: var(--gray); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .track-input { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .track-input input {
+      flex: 1; padding: 0.85rem 1.25rem; border-radius: 0.875rem;
+      border: 1.5px solid var(--blush); font-size: 0.95rem;
+      outline: none; font-family: 'Inter', sans-serif;
+      text-align: center; font-weight: 600;
+    }
+    .track-input input:focus { border-color: var(--pink); }
+    .track-result { display: none; margin-top: 1.5rem; border-top: 1px solid var(--blush); padding-top: 1.5rem; }
+    .track-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .status-badge {
+      padding: 0.35rem 0.875rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .status-Pending { background: #FEF9C3; color: #92400E; }
+    .status-Accepted { background: #DBEAFE; color: #1E40AF; }
+    .status-Painting { background: #FCE7F3; color: #9D174D; }
+    .status-Completed { background: #D1FAE5; color: #065F46; }
+    .status-Packed { background: #E0E7FF; color: #3730A3; }
+    .status-Shipped { background: #CFFAFE; color: #164E63; }
+    .status-Delivered { background: #D1FAE5; color: #065F46; }
+    .status-Cancelled { background: #FEE2E2; color: #991B1B; }
+    .timeline { position: relative; padding-left: 1.5rem; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--blush); }
+    .timeline-step { position: relative; margin-bottom: 1.25rem; }
+    .timeline-dot {
+      position: absolute; left: -1.65rem; top: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #E5E7EB; border: 3px solid white;
+      box-shadow: 0 0 0 2px #E5E7EB; transition: all 0.3s;
+    }
+    .timeline-dot.done { background: var(--pink); box-shadow: 0 0 0 2px var(--pink); }
+    .timeline-step h5 { font-size: 0.9rem; font-weight: 700; }
+    .timeline-step p { font-size: 0.8rem; color: var(--gray); margin-top: 0.15rem; }
+
+    /* ─── MY ORDERS ─── */
+    .orders-list { display: flex; flex-direction: column; gap: 1rem; }
+    .order-item {
+      background: white; border: 1px solid var(--blush); border-radius: 1.25rem;
+      padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;
+      transition: box-shadow 0.2s;
+    }
+    .order-item:hover { box-shadow: 0 4px 20px rgba(246,138,205,0.15); }
+    .order-item-left { display: flex; flex-direction: column; gap: 0.4rem; }
+    .order-track-num { font-weight: 800; font-size: 1rem; color: var(--charcoal); }
+    .order-meta { font-size: 0.82rem; color: var(--gray); }
+    .order-item-right { display: flex; align-items: center; gap: 1rem; }
+    .order-price { font-weight: 800; font-size: 1.1rem; }
+
+    /* ─── AUTH MODALS ─── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(45,37,41,0.5); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: white; border-radius: 1.75rem; width: 100%; max-width: 440px;
+      padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-close {
+      position: absolute; top: 1.25rem; right: 1.25rem; background: var(--cream);
+      border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: var(--gray);
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: var(--blush); color: var(--charcoal); }
+    .modal-header { text-align: center; margin-bottom: 1.75rem; }
+    .modal-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--blush); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; color: var(--pink); }
+    .modal-header h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .modal-header p { color: var(--gray); font-size: 0.9rem; }
+    .modal-tabs { display: flex; background: var(--cream); border-radius: 0.875rem; padding: 4px; margin-bottom: 1.5rem; }
+    .modal-tab { flex: 1; text-align: center; padding: 0.6rem; border-radius: 0.625rem; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; color: var(--gray); border: none; background: transparent; }
+    .modal-tab.active { background: white; color: var(--charcoal); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .modal-form { display: flex; flex-direction: column; gap: 1rem; }
+    .modal-input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .modal-input-group label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray); }
+    .modal-input-group input {
+      padding: 0.85rem 1rem; border-radius: 0.875rem; border: 1.5px solid var(--blush);
+      font-size: 0.95rem; outline: none; width: 100%; font-family: 'Inter', sans-serif;
+    }
+    .modal-input-group input:focus { border-color: var(--pink); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .modal-btn { width: 100%; padding: 0.9rem; border-radius: 0.875rem; background: var(--pink); color: white; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
+    .modal-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(246,138,205,0.4); }
+    .modal-hint { text-align: center; font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem; }
+    .creds-box { background: var(--cream); border: 1px solid var(--blush); border-radius: 0.75rem; padding: 0.875rem 1rem; font-size: 0.8rem; color: var(--gray); line-height: 1.6; margin-top: 0.5rem; }
+
+    /* ─── ALERT ─── */
+    .alert-bar {
+      position: fixed; top: 88px; left: 50%; transform: translateX(-50%);
+      z-index: 150; width: 100%; max-width: 520px; padding: 0 1rem;
+      display: none;
+    }
+    .alert-bar.show { display: block; animation: alertSlide 0.3s ease; }
+    @keyframes alertSlide { from { opacity: 0; transform: translateX(-50%) translateY(-10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    .alert-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.25rem; border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .alert-success { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+    .alert-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+    .alert-inner button { background: none; border: none; cursor: pointer; font-size: 1rem; margin-left: 0.75rem; }
+
+    /* ─── CHATBOT ─── */
+    .chat-fab {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 90;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem;
+    }
+    .chat-bubble-btn {
+      width: 60px; height: 60px; border-radius: 50%; background: var(--pink); color: white;
+      border: none; cursor: pointer; font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(246,138,205,0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-bubble-btn:hover { transform: scale(1.08); box-shadow: 0 6px 30px rgba(246,138,205,0.6); }
+    .chat-window {
+      display: none; width: 360px; height: 480px;
+      background: white; border-radius: 1.5rem; border: 1px solid var(--blush);
+      box-shadow: 0 12px 50px rgba(0,0,0,0.15); flex-direction: column; overflow: hidden;
+    }
+    .chat-window.open { display: flex; }
+    .chat-header {
+      background: linear-gradient(135deg, var(--pink), #e577bc);
+      padding: 1rem 1.25rem; display: flex; align-items: center;
+      justify-content: space-between; color: white;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .chat-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .chat-header h4 { font-weight: 700; font-size: 0.95rem; }
+    .chat-header span { font-size: 0.75rem; opacity: 0.85; }
+    .chat-close { background: none; border: none; color: white; cursor: pointer; font-size: 1rem; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; background: rgba(255,245,250,0.4); }
+    .msg { display: flex; gap: 0.5rem; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-bubble { max-width: 80%; padding: 0.75rem 1rem; border-radius: 1rem; font-size: 0.875rem; line-height: 1.5; }
+    .msg.bot .msg-bubble { background: white; border: 1px solid var(--blush); border-radius: 1rem 1rem 1rem 0; }
+    .msg.user .msg-bubble { background: var(--pink); color: white; border-radius: 1rem 1rem 0 1rem; }
+    .msg-source { font-size: 0.7rem; color: var(--gray); margin-top: 0.25rem; }
+    .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 0.75rem 1rem; }
+    .typing-indicator span { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: bounce 1s infinite; }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+    .chat-input-row { padding: 0.75rem; border-top: 1px solid var(--blush); background: white; display: flex; gap: 0.5rem; }
+    .chat-input-row input { flex: 1; padding: 0.6rem 1rem; border-radius: 0.75rem; border: 1.5px solid var(--blush); outline: none; font-size: 0.875rem; font-family: 'Inter', sans-serif; }
+    .chat-input-row input:focus { border-color: var(--pink); }
+    .chat-send { padding: 0.6rem 1rem; border-radius: 0.75rem; background: var(--pink); color: white; border: none; cursor: pointer; font-size: 0.9rem; }
+
+    /* ─── USER PILL ─── */
+    .user-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--cream); border: 1.5px solid var(--blush);
+      border-radius: 999px; padding: 0.35rem 1rem 0.35rem 0.5rem;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 0.75rem;
+    }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state { text-align: center; padding: 4rem 2rem; }
+    .empty-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.3; }
+    .empty-state h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--gray); font-size: 0.9rem; }
+
+    /* ─── LOADING SPINNER ─── */
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      main { padding: 1rem 1rem 3rem; }
+      .hero { flex-direction: column; padding: 2rem 1.5rem; }
+      .hero-img { width: 100%; height: 260px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .cards-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .gallery-grid { columns: 1; }
+      .nav-links { display: none; }
+      .chat-window { width: calc(100vw - 2rem); right: 1rem; }
+    }
+  
+.typing-indicator-ignored {
+  background: white;
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem 0.75rem 0.75rem 0;
+  border: 1px solid var(--blush);
+  max-width: fit-content;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--pink);
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out both;
+}
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script></head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showTab('home')">
+      <img src="../logo.jpeg" alt="WingsArtz Logo" class="nav-logo-img" onerror="this.style.display='none'">
+      <span class="nav-brand">Wings<span>Artz</span></span>
+    </a>
+    <div class="nav-links">
+      <a id="nav-home" class="active" onclick="showTab('home')">Home</a>
+      <a id="nav-gallery" onclick="showTab('gallery')">Gallery</a>
+      <a id="nav-order" onclick="showTab('custom-order')"><i class="fa-solid fa-palette" style="color:var(--pink)"></i> Custom Portrait</a>
+      <a id="nav-track" onclick="showTab('track')">Track Order</a>
+      <a id="nav-myorders" class="hidden" onclick="showTab('my-orders')">My Orders</a>
+    </div>
+    <div class="nav-actions" id="nav-actions">
+      <button class="btn btn-outline" onclick="openAuth('login')"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+      <button class="btn btn-primary" onclick="openAuth('signup')">Get Started</button>
+    </div>
+    <div class="nav-actions hidden" id="nav-user">
+      <div class="user-pill">
+        <div class="user-avatar" id="user-avatar-initials">U</div>
+        <span id="user-display-name">User</span>
+      </div>
+      <button class="btn btn-outline" onclick="logout()" style="padding: 0.5rem 1rem; font-size: 0.82rem;">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── ALERT ─── -->
+<div class="alert-bar" id="alert-bar">
+  <div class="alert-inner" id="alert-inner">
+    <span id="alert-msg">Message here</span>
+    <button onclick="hideAlert()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+</div>
+
+<!-- ─── MAIN CONTENT ─── -->
+<main>
+
+  <!-- HOME TAB -->
+  <div id="tab-home" class="tab-content active">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-text">
+        <span class="hero-badge"><i class="fa-solid fa-star"></i> Premium Handmade Art</span>
+        <h1>Turn Your Memories Into <em>Portrait Paintings</em></h1>
+        <p>WingsArtz creates beautiful customized oil and acrylic portrait paintings. Upload your photo, describe your vision, and our professional painters bring it to life — shipped worldwide.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;" onclick="showTab('custom-order')">
+            <i class="fa-solid fa-palette"></i> Order Custom Portrait
+          </button>
+          <button class="btn btn-outline" style="padding: 0.85rem 2rem; font-size: 1rem;" onclick="showTab('gallery')">
+            Explore Gallery <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="../logo.jpeg" alt="WingsArtz Art" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-paint-brush\' style=\'font-size:5rem;color:white;opacity:0.6\'></i>'">
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Portraits Delivered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Customer Rating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">7–10</div>
+        <div class="stat-label">Days Turnaround</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Satisfaction Guarantee</div>
+      </div>
+    </div>
+
+    <!-- Featured Products -->
+    <h2 class="section-title">Trending <span>Custom Creations</span></h2>
+    <div class="cards-grid" style="margin-bottom: 3rem;">
+      <div class="product-card">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=600&auto=format&fit=crop" alt="Family Portrait">
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Acrylic Canvas</div>
+          <h3>Handmade Family Portrait</h3>
+          <p>Vibrant color layers, premium canvas finish, ready to hang.</p>
+          <div class="card-footer">
+            <span class="card-price">₹10,000.00+</span>
+            <button class="card-action" onclick="showTab('custom-order')">Customize <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=600&auto=format&fit=crop" alt="Resin Art">
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Resin Crafts</div>
+          <h3>Ocean Resin Gift Tray</h3>
+          <p>Hand-poured epoxy resin server boards with customized names.</p>
+          <div class="card-footer">
+            <span class="card-price">₹3,999.00</span>
+            <button class="card-action" onclick="openAuth('login'); showAlert('Login to add to cart!','error')">Add to Cart <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&auto=format&fit=crop" alt="Gift Box">
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Gifts & Hampers</div>
+          <h3>Anniversary Gift Box</h3>
+          <p>Customizable greeting cards and mini oil paint portrait combo.</p>
+          <div class="card-footer">
+            <span class="card-price">₹1,299.00</span>
+            <button class="card-action" onclick="showTab('custom-order')">Order Now <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <h2 class="section-title" style="margin-bottom: 1rem;">How It <span>Works</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 3rem;">
+      <div style="background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem; text-align: center;">
+        <div style="width: 52px; height: 52px; background: var(--blush); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.4rem; color: var(--pink);">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.4rem;">1. Upload Photo</h4>
+        <p style="color: var(--gray); font-size: 0.8rem;">Upload a high quality reference image of your subject</p>
+      </div>
+      <div style="background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem; text-align: center;">
+        <div style="width: 52px; height: 52px; background: var(--blush); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.4rem; color: var(--pink);">
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.4rem;">2. Customize</h4>
+        <p style="color: var(--gray); font-size: 0.8rem;">Choose canvas size, frame type & describe your vision</p>
+      </div>
+      <div style="background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem; text-align: center;">
+        <div style="width: 52px; height: 52px; background: var(--blush); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.4rem; color: var(--pink);">
+          <i class="fa-solid fa-paint-brush"></i>
+        </div>
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.4rem;">3. We Paint</h4>
+        <p style="color: var(--gray); font-size: 0.8rem;">Our artists craft your portrait with love and precision</p>
+      </div>
+      <div style="background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem; text-align: center;">
+        <div style="width: 52px; height: 52px; background: var(--blush); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.4rem; color: var(--pink);">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.4rem;">4. Delivered</h4>
+        <p style="color: var(--gray); font-size: 0.8rem;">Your framed masterpiece ships securely to your door</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY TAB -->
+  <div id="tab-gallery" class="tab-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 class="section-title" style="margin-bottom: 0;">Our <span>Gallery</span></h2>
+      <button class="btn btn-primary" onclick="showTab('custom-order')"><i class="fa-solid fa-palette"></i> Order Your Portrait</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500&auto=format&fit=crop" alt="Abstract Oil Canvas">
+        <div class="gallery-info"><h4>Abstract Flower Oil Canvas</h4><p>₹7,500.00</p></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=500&auto=format&fit=crop" alt="Ocean Wave Art">
+        <div class="gallery-info"><h4>Ocean Wave Fluid Art</h4><p>₹4,999.00</p></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=500&auto=format&fit=crop" alt="Miniature Portrait">
+        <div class="gallery-info"><h4>Miniature Portrait Gold Frame</h4><p>₹11,000.00</p></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop" alt="Family Portrait">
+        <div class="gallery-info"><h4>Custom Family Portrait</h4><p>₹10,000.00+</p></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&auto=format&fit=crop" alt="Resin Tray">
+        <div class="gallery-info"><h4>Personalized Resin Tray</h4><p>₹3,999.00</p></div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&auto=format&fit=crop" alt="Gift Box">
+        <div class="gallery-info"><h4>Premium Gift Hamper Box</h4><p>₹2,799.00</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM ORDER TAB -->
+  <div id="tab-custom-order" class="tab-content" style="max-width: 860px; margin: 0 auto;">
+    <div class="order-card">
+      <div class="order-header">
+        <h2><i class="fa-solid fa-palette" style="margin-right: 0.5rem;"></i>Configure Custom Portrait Order</h2>
+        <p>Our painters turn reference photos into museum-quality paintings. 7–10 day turnaround.</p>
+      </div>
+      <div class="order-body">
+        <form id="order-form" onsubmit="submitOrder(event)">
+          <div class="form-grid">
+            <!-- Left: Upload -->
+            <div class="form-group">
+              <label>Reference Image <span style="color:var(--error)">*</span></label>
+              <div class="upload-zone" id="upload-zone">
+                <input type="file" id="image-file" required accept="image/jpeg,image/png,image/jpg,image/webp" onchange="previewFile()">
+                <div id="upload-prompt">
+                  <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                  <div class="upload-text">Click or drag & drop photo here</div>
+                  <div class="upload-hint">JPG, PNG, WEBP · Max 5MB</div>
+                </div>
+                <div class="upload-preview" id="upload-preview">
+                  <img id="preview-img" src="" alt="Preview">
+                  <button type="button" class="clear-btn" onclick="clearPreview(event)"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+              </div>
+            </div>
+            <!-- Right: Options -->
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div class="form-group">
+                <label>Canvas Size <span style="color:var(--error)">*</span></label>
+                <select id="size" onchange="updatePrice()">
+                  <option value="8x10">8" × 10" — ₹6,000.00</option>
+                  <option value="11x14">11" × 14" — ₹8,000.00</option>
+                  <option value="16x20" selected>16" × 20" — ₹10,000.00 (Standard)</option>
+                  <option value="24x36">24" × 36" — ₹14,000.00</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Frame Type</label>
+                <select id="frame" onchange="updatePrice()">
+                  <option value="None">No Frame — ₹0.00</option>
+                  <option value="Black Wood">Black Solid Wood — ₹1,200.00</option>
+                  <option value="Oak Wood">Oak Solid Wood — ₹1,500.00</option>
+                  <option value="Gold Filigree">Premium Gold Filigree — ₹2,500.00</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Requested Delivery Date <span style="color:var(--error)">*</span></label>
+                <input type="date" id="delivery-date" required>
+                <span class="hint">Minimum 7 days from today for custom portraits.</span>
+              </div>
+              <div class="form-group">
+                <label>Delivery Address <span style="color:var(--error)">*</span></label>
+                <div style="display:flex; gap:0.5rem;">
+                  <input type="text" id="order-location" required placeholder="e.g. Anna Nagar, Chennai" value="Anna Nagar, Chennai">
+                  <button type="button" class="btn btn-outline" style="padding: 0.5rem 1rem;" onclick="fetchCurrentLocation()" title="Fetch Current Geolocation">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Description -->
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>Custom Painting Instructions <span style="color:var(--error)">*</span></label>
+            <textarea id="description" required rows="3" placeholder="e.g. 'Paint the background with a golden sunset, smooth out hair, remove background building, use a warm color palette...'"></textarea>
+          </div>
+          <!-- Price Bar -->
+          <div class="price-bar">
+            <div>
+              <div class="price-label">Estimated Total</div>
+              <div class="price-amount" id="price-display">₹10,000.00</div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit-btn" style="padding: 1rem 2.5rem; font-size: 1rem;">
+              <i class="fa-solid fa-check"></i> Submit Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACK TAB -->
+  <div id="tab-track" class="tab-content">
+    <div class="track-card">
+      <h2><i class="fa-solid fa-location-dot" style="color:var(--pink); margin-right:0.5rem;"></i>Track Your Order</h2>
+      <p>Enter your WingsArtz tracking number to see your portrait's progress.</p>
+      <div class="track-input">
+        <input type="text" id="track-input" placeholder="e.g. WA-20260704-0001" onkeydown="if(event.key==='Enter') trackOrder()">
+        <button class="btn btn-primary" onclick="trackOrder()" style="border-radius: 0.875rem; padding: 0 1.25rem;">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <div class="track-result" id="track-result">
+        <div class="track-header">
+          <div>
+            <div style="font-size:0.75rem; color:var(--gray); font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Tracking ID</div>
+            <div id="result-tracking-num" style="font-weight:800; font-size:1.05rem;"></div>
+          </div>
+          <span id="result-status-badge" class="status-badge">Pending</span>
+        </div>
+        <h4 style="font-size: 0.875rem; font-weight: 700; margin-bottom: 1rem;">Order Progress</h4>
+        <div class="timeline">
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-0"></div>
+            <h5>Order Placed</h5>
+            <p>Your order has been received and awaiting review.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-1"></div>
+            <h5>Order Accepted</h5>
+            <p>Specifications verified. Painter queue assignment scheduled.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-2"></div>
+            <h5>Painting In Progress</h5>
+            <p>Painter allocated. Painting is underway.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-3"></div>
+            <h5>Painting Completed</h5>
+            <p>Artwork completed, dried, and ready for framing.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-4"></div>
+            <h5>Packed & Ready</h5>
+            <p>Securely packaged with protective materials.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-5"></div>
+            <h5>Dispatched & Shipped</h5>
+            <p>Label printed. Courier tracking started.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot" id="dot-6"></div>
+            <h5>Delivered</h5>
+            <p>Your masterpiece has arrived!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY ORDERS TAB -->
+  <div id="tab-my-orders" class="tab-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 class="section-title" style="margin-bottom: 0;">My <span>Orders</span></h2>
+      <button class="btn btn-primary" onclick="showTab('custom-order')"><i class="fa-solid fa-plus"></i> New Order</button>
+    </div>
+    <div id="my-orders-content">
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
+        <h3>No Orders Yet</h3>
+        <p>You haven't placed any custom portrait orders yet.</p>
+        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="showTab('custom-order')">Place Your First Order</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer style="background: var(--charcoal); color: #9CA3AF; padding: 2.5rem 2rem; margin-top: 3rem;">
+  <div style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.25rem; color: white; margin-bottom: 0.25rem;">Wings<span style="color: var(--pink);">Artz</span></div>
+      <div style="font-size: 0.82rem;">Premium Handmade Portraits & Creative Gift Collections</div>
+    </div>
+    <div style="font-size: 0.82rem;">© 2026 WingsArtz. All rights reserved.</div>
+    <div style="display: flex; gap: 1.5rem; align-items: center;">
+      <a href="admin.html" style="color: var(--pink); text-decoration: none; font-size: 0.82rem; font-weight: 600;"><i class="fa-solid fa-lock"></i> Staff Portal</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── AUTH MODAL ─── -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAuth()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-header">
+      <div class="modal-icon"><i class="fa-solid fa-user"></i></div>
+      <h3>Welcome to WingsArtz</h3>
+      <p>Sign in or create your account to place orders.</p>
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="modal-tab" id="tab-signup-btn" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+    <!-- Login Form -->
+    <div id="login-form" class="modal-form">
+      <div class="modal-input-group">
+        <label>Email Address</label>
+        <input type="email" id="login-email" placeholder="customer@gmail.com">
+      </div>
+      <div class="modal-input-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+      <button class="modal-btn" onclick="submitLogin()">Sign In</button>
+      <div class="creds-box">
+        <strong>Test credentials:</strong> customer@gmail.com / WingsCustomer2026!
+      </div>
+    </div>
+    <!-- Signup Form -->
+    <div id="signup-form" class="modal-form" style="display:none;">
+      <div class="form-row">
+        <div class="modal-input-group">
+          <label>First Name</label>
+          <input type="text" id="signup-first" placeholder="Jane">
+        </div>
+        <div class="modal-input-group">
+          <label>Last Name</label>
+          <input type="text" id="signup-last" placeholder="Doe">
+        </div>
+      </div>
+      <div class="modal-input-group">
+        <label>Email Address</label>
+        <input type="email" id="signup-email" placeholder="jane@gmail.com">
+      </div>
+      <div class="modal-input-group">
+        <label>Password (min 8 characters)</label>
+        <input type="password" id="signup-password" placeholder="••••••••">
+      </div>
+      <button class="modal-btn" onclick="submitSignup()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CHATBOT ─── -->
+<div class="chat-fab">
+  <div class="chat-window" id="chat-window">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <h4>WingsArtz AI Support</h4>
+          <span>Online · RAG Knowledge Base</span>
+        </div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg bot">
+        <div class="msg-bubble">
+          👋 Hello! I'm your WingsArtz AI assistant. Ask me about portrait sizing, framing options, refund policies, delivery times, or anything else!
+          <div class="msg-source">WingsArtz Knowledge Base</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask about orders, sizing, refunds..." onkeydown="if(event.key==='Enter') sendChat()">
+      <button class="chat-send" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <button class="chat-bubble-btn" onclick="toggleChat()" title="Chat with AI Support">
+    <i class="fa-solid fa-message"></i>
+  </button>
+</div>
+
+<!-- ─── JAVASCRIPT ─── -->
+<script>
+const API = 'http://localhost:8000/api/v1';
+let token = localStorage.getItem('wa_token') || '';
+let currentUser = JSON.parse(localStorage.getItem('wa_user') || 'null');
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded', () => {
+  // Set min delivery date
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  const dateInput = document.getElementById('delivery-date');
+  dateInput.min = d.toISOString().split('T')[0];
+  dateInput.value = d.toISOString().split('T')[0];
+
+  if (token && currentUser) {
+    updateUserUI();
+  }
+});
+
+// ─── TABS ───
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  // Update nav active state
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const navMap = { home: 'nav-home', gallery: 'nav-gallery', 'custom-order': 'nav-order', track: 'nav-track', 'my-orders': 'nav-myorders' };
+  if (navMap[id]) document.getElementById(navMap[id])?.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'my-orders') loadMyOrders();
+}
+
+// ─── AUTH UI ───
+function openAuth(tab) {
+  document.getElementById('auth-modal').classList.add('open');
+  switchAuthTab(tab);
+}
+function closeAuth() {
+  document.getElementById('auth-modal').classList.remove('open');
+}
+function switchAuthTab(tab) {
+  document.getElementById('login-form').style.display = tab === 'login' ? 'flex' : 'none';
+  document.getElementById('signup-form').style.display = tab === 'signup' ? 'flex' : 'none';
+  document.getElementById('tab-login-btn').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-signup-btn').classList.toggle('active', tab === 'signup');
+}
+
+function updateUserUI() {
+  document.getElementById('nav-actions').classList.add('hidden');
+  document.getElementById('nav-user').classList.remove('hidden');
+  document.getElementById('nav-myorders').classList.remove('hidden');
+  const name = currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : 'User';
+  document.getElementById('user-display-name').textContent = name;
+  const initials = currentUser ? `${currentUser.first_name[0]}${currentUser.last_name[0]}` : 'U';
+  document.getElementById('user-avatar-initials').textContent = initials;
+}
+
+function logout() {
+  token = '';
+  currentUser = null;
+  localStorage.removeItem('wa_token');
+  localStorage.removeItem('wa_user');
+  document.getElementById('nav-actions').classList.remove('hidden');
+  document.getElementById('nav-user').classList.add('hidden');
+  document.getElementById('nav-myorders').classList.add('hidden');
+  showTab('home');
+  showAlert('Logged out successfully.', 'success');
+}
+
+// ─── LOGIN ───
+async function submitLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) { showAlert('Please fill in all fields.', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    if (!res.ok) throw new Error('Invalid credentials');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    token = data.access_token;
+
+    // Fetch user details
+    const me = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+    currentUser = await me.json();
+    localStorage.setItem('wa_token', token);
+    localStorage.setItem('wa_user', JSON.stringify(currentUser));
+
+    closeAuth();
+    updateUserUI();
+    showAlert(`Welcome back, ${currentUser.first_name}! 🎨`, 'success');
+  } catch (e) {
+    showAlert('Sign in failed. Check your credentials.', 'error');
+  }
+}
+
+// ─── SIGNUP ───
+async function submitSignup() {
+  const first_name = document.getElementById('signup-first').value.trim();
+  const last_name = document.getElementById('signup-last').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  if (!first_name || !last_name || !email || !password) { showAlert('Please fill in all fields.', 'error'); return; }
+  if (password.length < 8) { showAlert('Password must be at least 8 characters.', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ first_name, last_name, email, password })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Signup failed');
+    }
+    showAlert('Account created! Please sign in.', 'success');
+    switchAuthTab('login');
+    document.getElementById('login-email').value = email;
+  } catch (e) {
+    showAlert(e.message, 'error');
+  }
+}
+
+// ─── FILE UPLOAD ───
+function previewFile() {
+  const file = document.getElementById('image-file').files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showAlert('File too large. Max 5MB.', 'error'); document.getElementById('image-file').value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('preview-img').src = e.target.result;
+    document.getElementById('upload-prompt').style.display = 'none';
+    document.getElementById('upload-preview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+function clearPreview(e) {
+  e.preventDefault(); e.stopPropagation();
+  document.getElementById('image-file').value = '';
+  document.getElementById('upload-prompt').style.display = 'flex';
+  document.getElementById('upload-preview').style.display = 'none';
+}
+
+// ─── PRICE CALC ───
+function updatePrice() {
+  const prices = { '8x10': 6000, '11x14': 8000, '16x20': 10000, '24x36': 14000 };
+  const frames = { 'None': 0, 'Black Wood': 1200, 'Oak Wood': 1500, 'Gold Filigree': 2500 };
+  const total = prices[document.getElementById('size').value] + frames[document.getElementById('frame').value];
+  document.getElementById('price-display').textContent = '₹' + total.toLocaleString('en-IN') + '.00';
+}
+
+// ─── SUBMIT ORDER ───
+async function submitOrder(e) {
+  e.preventDefault();
+  if (!token) { openAuth('login'); showAlert('Please sign in before placing an order.', 'error'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.innerHTML = '<span class="spinner"></span> Placing Order...';
+  btn.disabled = true;
+
+  const formData = new FormData();
+  formData.append('image', document.getElementById('image-file').files[0]);
+  formData.append('size_inches', document.getElementById('size').value);
+  formData.append('frame_type', document.getElementById('frame').value);
+  formData.append('custom_description', document.getElementById('description').value);
+  formData.append('delivery_date_str', document.getElementById('delivery-date').value + 'T12:00:00Z');
+  formData.append('location', document.getElementById('order-location').value);
+
+  try {
+    const res = await fetch(`${API}/orders/custom`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Order failed');
+    }
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showAlert(`🎨 Order placed! Tracking: ${data.tracking_number}`, 'success');
+    document.getElementById('order-form').reset();
+    clearPreview({ preventDefault: () => {}, stopPropagation: () => {} });
+    updatePrice();
+    showTab('my-orders');
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showAlert(err.message || 'Failed to place order. Make sure backend is running.', 'error');
+  } finally {
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Submit Order';
+    btn.disabled = false;
+  }
+}
+
+// ─── GEOLOCATION AUTOFILL ───
+function fetchCurrentLocation() {
+  const locInput = document.getElementById('order-location');
+  const btn = locInput.nextElementSibling;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  btn.disabled = true;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`);
+          const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+          const city = data.address.city || data.address.town || data.address.suburb || "Chennai";
+          const state = data.address.state || "Tamil Nadu";
+          locInput.value = `${city}, ${state}`;
+          showAlert(`✓ Geolocation set to: ${city}, ${state}`, 'success');
+        } catch {
+          locInput.value = "Anna Nagar, Chennai";
+          showAlert('Failed to resolve coordinates. Defaulted to Anna Nagar, Chennai.', 'warning');
+        } finally {
+          btn.innerHTML = originalHtml;
+          btn.disabled = false;
+        }
+      },
+      (error) => {
+        showAlert('Location access denied. Please type manually.', 'error');
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      },
+      { timeout: 10000 }
+    );
+  } else {
+    showAlert('Geolocation not supported by this browser.', 'error');
+    btn.innerHTML = originalHtml;
+    btn.disabled = false;
+  }
+}
+
+// ─── TRACK ORDER ───
+async function trackOrder() {
+  const num = document.getElementById('track-input').value.trim();
+  if (!num) { showAlert('Please enter a tracking number.', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/orders/track/${num}`);
+    if (!res.ok) throw new Error('Not found');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    document.getElementById('result-tracking-num').textContent = data.tracking_number;
+    const badge = document.getElementById('result-status-badge');
+    badge.textContent = data.status;
+    badge.className = 'status-badge status-' + data.status;
+    updateTimeline(data.status);
+    document.getElementById('track-result').style.display = 'block';
+  } catch {
+    showAlert('Tracking number not found. Make sure the backend is running and DB is seeded.', 'error');
+  }
+}
+
+function updateTimeline(status) {
+  const order = ['Pending', 'Accepted', 'Painting', 'Completed', 'Packed', 'Shipped', 'Delivered'];
+  const idx = order.indexOf(status);
+  for (let i = 0; i <= 6; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (dot) dot.className = 'timeline-dot' + (i <= idx ? ' done' : '');
+  }
+}
+
+// ─── MY ORDERS ───
+async function loadMyOrders() {
+  if (!token) {
+    document.getElementById('my-orders-content').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fa-solid fa-lock"></i></div>
+        <h3>Login Required</h3>
+        <p>Please sign in to view your orders.</p>
+        <button class="btn btn-primary" style="margin-top:1rem;" onclick="openAuth('login')">Sign In</button>
+      </div>`;
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/orders/my-orders`, { headers: { Authorization: `Bearer ${token}` } });
+    const orders = await res.json();
+    const container = document.getElementById('my-orders-content');
+    if (!orders.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
+          <h3>No Orders Yet</h3>
+          <p>You haven't placed any orders. Start by ordering a custom portrait!</p>
+          <button class="btn btn-primary" style="margin-top:1rem;" onclick="showTab('custom-order')">Place Order</button>
+        </div>`;
+      return;
+    }
+    container.innerHTML = `<div class="orders-list">` + orders.map(o => `
+      <div class="order-item">
+        <div class="order-item-left">
+          <div class="order-track-num"><i class="fa-solid fa-box" style="color:var(--pink);margin-right:6px;"></i>${o.tracking_number}</div>
+          <div class="order-meta">
+            ${o.spec ? `<span>${o.spec.size_inches} Canvas · ${o.spec.frame_type}</span> · ` : ''}
+            Ordered ${new Date(o.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })} ·
+            Due ${new Date(o.delivery_date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}
+          </div>
+        </div>
+        <div class="order-item-right">
+          <span class="order-price">₹${parseFloat(o.total_price).toLocaleString('en-IN')}</span>
+          <span class="status-badge status-${o.status}">${o.status}</span>
+          ${o.status === 'Accepted' ? `
+            <button class="btn btn-primary" style="padding:0.4rem 0.85rem; font-size:0.8rem; font-weight:700;" onclick="payOrder(${o.id}, '${o.tracking_number}', ${o.total_price})">
+              <i class="fa-solid fa-credit-card"></i> Pay Now
+            </button>
+          ` : ''}
+          <button class="btn btn-outline" style="padding:0.4rem 0.85rem; font-size:0.8rem;" onclick="trackOrderById('${o.tracking_number}')">
+            <i class="fa-solid fa-location-dot"></i> Track
+          </button>
+        </div>
+      </div>`).join('') + '</div>';
+  } catch {
+    showAlert('Failed to load orders. Make sure backend is running.', 'error');
+  }
+}
+
+function trackOrderById(num) {
+  showTab('track');
+  document.getElementById('track-input').value = num;
+  trackOrder();
+}
+
+// ─── CHATBOT ───
+function toggleChat() {
+  document.getElementById('chat-window').classList.toggle('open');
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `<div class="msg user"><div class="msg-bubble">${escapeHtml(text)}</div></div>`;
+
+  // Typing indicator
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-bubble" style="display:flex;gap:4px;align-items:center;min-height:24px;"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/chat/support`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: text, role: 'Customer' })
+    });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-bubble">${marked.parse(data.response)}<div class="msg-source">Source: WingsArtz Knowledge Base · RAG AI</div></div></div>`;
+  } catch {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div class="msg bot"><div class="msg-bubble" style="background:#FEE2E2;border-color:#FCA5A5;color:#991B1B;">⚠️ Backend offline. Start the server at http://localhost:8000</div></div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── ALERTS ───
+let alertTimer;
+function showAlert(msg, type = 'success') {
+  const bar = document.getElementById('alert-bar');
+  const inner = document.getElementById('alert-inner');
+  document.getElementById('alert-msg').textContent = msg;
+  inner.className = 'alert-inner alert-' + type;
+  bar.classList.add('show');
+  clearTimeout(alertTimer);
+  alertTimer = setTimeout(hideAlert, 4000);
+}
+function hideAlert() {
+  document.getElementById('alert-bar').classList.remove('show');
+}
+
+// ─── PAYMENT FLOW ───
+let paymentOrderId = null;
+function payOrder(id, trackingNum, amount) {
+  paymentOrderId = id;
+  document.getElementById('pay-order-id').value = id;
+  document.getElementById('pay-order-tracking').textContent = trackingNum;
+  document.getElementById('pay-order-amount').textContent = '₹' + parseFloat(amount).toLocaleString('en-IN') + '.00';
+  document.getElementById('payment-modal').style.display = 'flex';
+}
+function closePaymentModal() {
+  document.getElementById('payment-modal').style.display = 'none';
+}
+async function confirmOrderPayment() {
+  const id = document.getElementById('pay-order-id').value;
+  const btn = document.getElementById('pay-submit-btn');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span> Authorizing Payment...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/orders/${id}/pay`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Payment failed');
+    }
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showAlert(`✓ ${data.message}`, 'success');
+    closePaymentModal();
+    loadMyOrders();
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showAlert(err.message || 'Failed to complete payment.', 'error');
+  } finally {
+    btn.innerHTML = originalHtml;
+    btn.disabled = false;
+  }
+}
+</script>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="payment-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center; padding:1rem;">
+  <div style="background:white; border-radius:1.5rem; padding:2rem; width:100%; max-width:440px; box-shadow:0 20px 60px rgba(0,0,0,0.2); position:relative;">
+    <button onclick="closePaymentModal()" style="position:absolute; top:1rem; right:1rem; background:#FFF5FA; border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; color:var(--gray); display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+    <h3 style="font-size:1.25rem; font-weight:800; margin-bottom:1rem; color:var(--charcoal);"><i class="fa-solid fa-credit-card" style="color:var(--pink);margin-right:8px;"></i>Secure Order Payment</h3>
+    <p style="font-size:0.875rem; color:var(--gray); margin-bottom:1.25rem;">Confirming payment for order: <strong id="pay-order-tracking" style="color:var(--charcoal);"></strong></p>
+    <div style="background:var(--cream); padding:1rem; border-radius:0.875rem; border:1px solid var(--blush); margin-bottom:1.25rem;">
+      <div style="display:flex; justify-content:space-between; font-size:0.875rem; color:var(--gray); align-items:center;">
+        <span>Amount Due:</span>
+        <strong id="pay-order-amount" style="color:var(--pink); font-size:1.2rem;"></strong>
+      </div>
+    </div>
+    <!-- Card details Form -->
+    <div class="form-group" style="margin-bottom:0.75rem;">
+      <label style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--gray); display:block; margin-bottom:0.3rem;">Card Number</label>
+      <input type="text" placeholder="4111 2222 3333 4444" style="width:100%; padding:0.75rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.9rem;" value="4111 2222 3333 4444">
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.5rem;">
+      <div>
+        <label style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--gray); display:block; margin-bottom:0.3rem;">Expiry</label>
+        <input type="text" placeholder="12 / 29" style="width:100%; padding:0.75rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.9rem;" value="12/29">
+      </div>
+      <div>
+        <label style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--gray); display:block; margin-bottom:0.3rem;">CVV</label>
+        <input type="text" placeholder="123" style="width:100%; padding:0.75rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.9rem;" value="123">
+      </div>
+    </div>
+    <button class="btn btn-primary" id="pay-submit-btn" style="width:100%; padding:0.875rem;" onclick="confirmOrderPayment()">
+      <i class="fa-solid fa-lock"></i> Authorize & Pay
+    </button>
+    <input type="hidden" id="pay-order-id">
+  </div>
+</div>
+</body>
+</html>

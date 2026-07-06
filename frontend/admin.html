@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WingsArtz Staff Portal | Administrative Workspace</title>
+  <meta name="description" content="WingsArtz internal staff portal for owners, painters, inventory managers, and shipping managers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --pink: #F68ACD; --blush: #FCDAF3; --gold: #E5A93B;
+      --charcoal: #2D2529; --cream: #FFF5FA; --white: #ffffff;
+      --gray: #6B7280; --success: #10B981; --error: #EF4444;
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #F8F4F6; color: var(--charcoal); min-height: 100vh; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Outfit', sans-serif; }
+
+    /* ─── LOGIN ─── */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
+      padding: 2rem;
+    }
+    .login-card {
+      background: white; border-radius: 2rem; padding: 3rem;
+      width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .login-logo img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); margin-bottom: 0.75rem; display: block; margin: 0 auto 0.75rem; }
+    .login-logo h1 { font-size: 1.75rem; font-weight: 900; }
+    .login-logo h1 span { color: var(--pink); }
+    .login-logo p { color: var(--gray); font-size: 0.875rem; margin-top: 0.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray); margin-bottom: 0.4rem; }
+    .form-group input {
+      width: 100%; padding: 0.875rem 1rem; border-radius: 0.875rem;
+      border: 1.5px solid var(--blush); font-size: 0.95rem;
+      outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.2s;
+    }
+    .form-group input:focus { border-color: var(--pink); }
+    .btn-full { width: 100%; padding: 1rem; border-radius: 0.875rem; background: var(--pink); color: white; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; margin-top: 0.5rem; transition: all 0.2s; }
+    .btn-full:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(246,138,205,0.4); }
+    .creds-box { background: var(--cream); border: 1px solid var(--blush); border-radius: 0.875rem; padding: 1rem; margin-top: 1rem; font-size: 0.78rem; color: var(--gray); line-height: 1.8; }
+
+    /* ─── DASHBOARD LAYOUT ─── */
+    .dashboard { display: none; }
+    .dashboard.show { display: flex; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w); min-height: 100vh; background: var(--charcoal);
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 50;
+    }
+    .sidebar-logo { padding: 1.5rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 10px; }
+    .sidebar-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--pink); }
+    .sidebar-logo-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: white; }
+    .sidebar-logo-text span { color: var(--pink); }
+    .sidebar-user { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-user-name { font-weight: 700; color: white; font-size: 0.9rem; }
+    .sidebar-user-role { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .sidebar-role-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; background: var(--pink); color: white; font-size: 0.7rem; font-weight: 700; margin-top: 4px; }
+    .sidebar-nav { flex: 1; padding: 1rem 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      border-radius: 0.75rem; color: rgba(255,255,255,0.6); font-size: 0.875rem;
+      font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; background: transparent;
+      width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+    .nav-item.active { background: rgba(246,138,205,0.15); color: var(--pink); }
+    .nav-item i { width: 18px; text-align: center; }
+    .sidebar-bottom { padding: 1rem 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .logout-btn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.75rem; color: rgba(255,255,255,0.5); font-size: 0.875rem; cursor: pointer; transition: all 0.2s; border: none; background: transparent; width: 100%; }
+    .logout-btn:hover { background: rgba(239,68,68,0.1); color: #FCA5A5; }
+
+    /* Main Content */
+    .main-content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar {
+      background: white; border-bottom: 1px solid var(--blush);
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 30;
+    }
+    .topbar h2 { font-size: 1.35rem; font-weight: 800; color: var(--charcoal); }
+    .topbar-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.25rem; border-radius: 0.75rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: var(--pink); color: white; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-secondary { background: var(--cream); color: var(--charcoal); border: 1px solid var(--blush); }
+    .btn-secondary:hover { border-color: var(--pink); color: var(--pink); }
+    .btn-gold { background: var(--gold); color: white; }
+    .btn-gold:hover { opacity: 0.9; }
+    .btn-danger { background: #FEE2E2; color: #991B1B; }
+    .btn-danger:hover { background: #FECACA; }
+    .btn-success { background: #D1FAE5; color: #065F46; }
+    .btn-success:hover { background: #A7F3D0; }
+    .btn-sm { padding: 0.4rem 0.875rem; font-size: 0.8rem; }
+
+    .page-content { padding: 2rem; flex: 1; }
+
+    /* ─── VIEWS ─── */
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ─── KPI GRID ─── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    .kpi-card {
+      background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .kpi-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .kpi-icon { width: 44px; height: 44px; border-radius: 0.875rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 0.25rem; }
+    .kpi-value { font-size: 2rem; font-weight: 900; color: var(--charcoal); font-family: 'Outfit', sans-serif; }
+    .kpi-label { font-size: 0.82rem; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+    .section-header h3 { font-size: 1.1rem; font-weight: 800; }
+
+    /* ─── CARD ─── */
+    .card { background: white; border: 1px solid var(--blush); border-radius: 1.25rem; overflow: hidden; margin-bottom: 1.5rem; }
+    .card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--blush); display: flex; align-items: center; justify-content: space-between; }
+    .card-header h3 { font-size: 1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 1.5rem; }
+
+    /* ─── TABLE ─── */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray); background: var(--cream); border-bottom: 1px solid var(--blush); text-align: left; }
+    .data-table td { padding: 0.875rem 1rem; font-size: 0.875rem; border-bottom: 1px solid #F9F0F5; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,245,250,0.5); }
+    .data-table .actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+    /* ─── STATUS BADGES ─── */
+    .badge { display: inline-block; padding: 0.25rem 0.625rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .badge-Pending { background: #FEF9C3; color: #92400E; }
+    .badge-Accepted { background: #DBEAFE; color: #1E40AF; }
+    .badge-Painting { background: #FCE7F3; color: #9D174D; }
+    .badge-Completed { background: #D1FAE5; color: #065F46; }
+    .badge-Packed { background: #E0E7FF; color: #3730A3; }
+    .badge-Shipped { background: #CFFAFE; color: #164E63; }
+    .badge-Delivered { background: #D1FAE5; color: #065F46; }
+    .badge-Cancelled { background: #FEE2E2; color: #991B1B; }
+    .badge-Low { background: #FEE2E2; color: #991B1B; }
+    .badge-Normal { background: #D1FAE5; color: #065F46; }
+    .badge-Inventory { background: #FEF3C7; color: #92400E; }
+    .badge-Demand { background: #DBEAFE; color: #1E40AF; }
+    .badge-Shipping { background: #CFFAFE; color: #164E63; }
+    .badge-Business { background: #EDE9FE; color: #5B21B6; }
+    .badge-approved { background: #D1FAE5; color: #065F46; }
+    .badge-Rejected { background: #FEE2E2; color: #991B1B; }
+
+    /* ─── REC CARDS ─── */
+    .rec-card { background: white; border: 1px solid var(--blush); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1rem; }
+    .rec-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .rec-text { font-size: 0.9rem; font-weight: 500; color: var(--charcoal); margin-bottom: 0.875rem; line-height: 1.6; }
+    .rec-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--blush); padding-top: 0.875rem; }
+    .rec-impacts { display: flex; gap: 1.25rem; font-size: 0.8rem; }
+    .rec-actions { display: flex; gap: 0.5rem; }
+
+    /* ─── PAINTER JOBS ─── */
+    .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+    .job-card { background: white; border: 1px solid var(--blush); border-radius: 1.25rem; padding: 1.5rem; }
+    .job-card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--blush); margin-bottom: 1rem; }
+    .job-detail { font-size: 0.82rem; color: var(--gray); margin-bottom: 0.35rem; }
+    .job-detail strong { color: var(--charcoal); }
+    .job-desc { font-size: 0.82rem; background: var(--cream); border-radius: 0.625rem; padding: 0.75rem; color: var(--charcoal); line-height: 1.5; margin: 0.75rem 0; }
+    .job-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
+
+    /* ─── INVENTORY ─── */
+    .stock-bar { height: 6px; border-radius: 999px; background: #E5E7EB; overflow: hidden; margin-top: 4px; }
+    .stock-fill { height: 100%; border-radius: 999px; background: var(--success); transition: width 0.3s; }
+    .stock-fill.low { background: var(--error); }
+
+    /* ─── SHIPPING RATES ─── */
+    .rate-card { border: 1.5px solid var(--blush); border-radius: 1rem; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; transition: all 0.2s; }
+    .rate-card.recommended { border-color: var(--pink); background: rgba(252,218,243,0.1); }
+    .rate-carrier { font-weight: 700; font-size: 0.9rem; }
+    .rate-days { font-size: 0.75rem; color: var(--gray); margin-top: 2px; }
+    .rate-price { font-size: 1.25rem; font-weight: 900; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: white; border-radius: 1.5rem; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative; animation: modalIn 0.25s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+    .modal-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: var(--cream); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; color: var(--gray); display: flex; align-items: center; justify-content: center; }
+    .modal-select { width: 100%; padding: 0.875rem 1rem; border-radius: 0.875rem; border: 1.5px solid var(--blush); font-size: 0.95rem; outline: none; font-family: 'Inter', sans-serif; margin-bottom: 1rem; }
+    .modal-select:focus { border-color: var(--pink); }
+    .modal-input { width: 100%; padding: 0.875rem 1rem; border-radius: 0.875rem; border: 1.5px solid var(--blush); font-size: 0.95rem; outline: none; font-family: 'Inter', sans-serif; margin-bottom: 1rem; }
+    .modal-input:focus { border-color: var(--pink); }
+
+    /* ─── ALERT ─── */
+    .toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300;
+      background: var(--charcoal); color: white; padding: 1rem 1.5rem;
+      border-radius: 1rem; font-size: 0.9rem; font-weight: 500;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2); display: none;
+      max-width: 360px; border-left: 4px solid var(--pink);
+    }
+    .toast.show { display: flex; align-items: center; gap: 0.75rem; animation: toastIn 0.3s ease; }
+    .toast.success { border-left-color: var(--success); }
+    .toast.error { border-left-color: var(--error); }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* ─── SPINNER ─── */
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── EMPTY ─── */
+    .empty { text-align: center; padding: 3rem 2rem; color: var(--gray); }
+    .empty i { font-size: 3rem; opacity: 0.3; margin-bottom: 1rem; display: block; }
+    .empty h4 { font-size: 1rem; color: var(--charcoal); margin-bottom: 0.25rem; }
+    .empty p { font-size: 0.875rem; }
+
+    /* ─── UPLOAD WIP ─── */
+    .wip-upload { border: 2px dashed var(--blush); border-radius: 0.875rem; padding: 1.5rem; text-align: center; cursor: pointer; position: relative; transition: border-color 0.2s; }
+    .wip-upload:hover { border-color: var(--pink); }
+    .wip-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .wip-upload i { font-size: 1.75rem; color: var(--pink); margin-bottom: 0.5rem; display: block; }
+    .wip-upload p { font-size: 0.82rem; color: var(--gray); }
+  
+.typing-indicator {
+  background: white;
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem 0.75rem 0.75rem 0;
+  border: 1px solid var(--blush);
+  max-width: fit-content;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--pink);
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out both;
+}
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script></head>
+<body>
+
+<!-- ─── LOGIN SCREEN ─── -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="../logo.jpeg" alt="WingsArtz" onerror="this.style.display='none'">
+      <h1>Wings<span>Artz</span></h1>
+      <p>Staff Portal — Authorized Personnel Only</p>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="login-email" placeholder="owner@wingsartz.com">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter') login()">
+    </div>
+    <button class="btn-full" onclick="login()" id="login-btn">
+      <i class="fa-solid fa-lock"></i> Authenticate Session
+    </button>
+    <div class="creds-box">
+      <strong style="display:block; margin-bottom:4px;">Staff Credentials (seeded):</strong>
+      👑 Owner: owner@wingsartz.com / WingsOwner2026!<br>
+      🎨 Painter: painter1@wingsartz.com / WingsPainter2026!<br>
+      📦 Inventory: inventory@wingsartz.com / WingsInventory2026!<br>
+      🚚 Shipping: shipping@wingsartz.com / WingsShipping2026!
+    </div>
+    <div style="text-align:center; margin-top:1rem;">
+      <a href="index.html" style="color:var(--pink); font-size:0.82rem; text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> Back to Customer Store</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DASHBOARD ─── -->
+<div class="dashboard" id="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../logo.jpeg" alt="Logo" onerror="this.style.display='none'">
+      <div class="sidebar-logo-text">Wings<span>Artz</span></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-user-name" id="sb-name">User</div>
+      <div class="sidebar-user-role" id="sb-email">role@wingsartz.com</div>
+      <span class="sidebar-role-badge" id="sb-role">Role</span>
+    </div>
+
+    <!-- Owner Nav -->
+    <nav class="sidebar-nav" id="owner-nav" style="display:none;">
+      <button class="nav-item active" onclick="showView('owner-kpi')"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+      <button class="nav-item" onclick="showView('owner-orders')"><i class="fa-solid fa-clipboard-list"></i> All Orders</button>
+      <button class="nav-item" onclick="showView('owner-ai')"><i class="fa-solid fa-robot"></i> AI Recommendations</button>
+    </nav>
+    <!-- Painter Nav -->
+    <nav class="sidebar-nav" id="painter-nav" style="display:none;">
+      <button class="nav-item active" onclick="showView('painter-jobs')"><i class="fa-solid fa-paint-brush"></i> My Assigned Jobs</button>
+    </nav>
+    <!-- Inventory Nav -->
+    <nav class="sidebar-nav" id="inventory-nav" style="display:none;">
+      <button class="nav-item active" onclick="showView('inventory-stock')"><i class="fa-solid fa-boxes-stacked"></i> Stock Inventory</button>
+    </nav>
+    <!-- Shipping Nav -->
+    <nav class="sidebar-nav" id="shipping-nav" style="display:none;">
+      <button class="nav-item active" onclick="showView('shipping-main')"><i class="fa-solid fa-truck"></i> Fulfillment Hub</button>
+      <button class="nav-item" onclick="showView('shipping-ready')"><i class="fa-solid fa-box-open"></i> Ready to Ship</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="topbar">
+      <h2 id="topbar-title">Dashboard</h2>
+      <div class="topbar-actions" id="topbar-actions"></div>
+    </div>
+    <div class="page-content">
+
+      <!-- ─── OWNER: KPI DASHBOARD ─── -->
+      <div class="view active" id="view-owner-kpi">
+        <div class="kpi-grid" id="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#FCE7F3;"><i class="fa-solid fa-shopping-bag" style="color:var(--pink);"></i></div>
+            <div class="kpi-value" id="kpi-orders">—</div>
+            <div class="kpi-label">Total Orders</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#FEF3C7;"><i class="fa-solid fa-dollar-sign" style="color:var(--gold);"></i></div>
+            <div class="kpi-value" id="kpi-revenue">—</div>
+            <div class="kpi-label">Gross Revenue</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#D1FAE5;"><i class="fa-solid fa-chart-line" style="color:#10B981;"></i></div>
+            <div class="kpi-value" id="kpi-profit">—</div>
+            <div class="kpi-label">Net Profit (40% margin)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#E0E7FF;"><i class="fa-solid fa-paint-brush" style="color:#6366F1;"></i></div>
+            <div class="kpi-value" id="kpi-painters">—</div>
+            <div class="kpi-label">Active Painters</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#CFFAFE;"><i class="fa-solid fa-users" style="color:#0891B2;"></i></div>
+            <div class="kpi-value" id="kpi-customers">—</div>
+            <div class="kpi-label">Total Customers</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#FEF9C3;"><i class="fa-solid fa-clock" style="color:#D97706;"></i></div>
+            <div class="kpi-value" id="kpi-pending">—</div>
+            <div class="kpi-label">Pending Orders</div>
+          </div>
+        </div>
+
+        <!-- Risk Panel -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--gold);"></i> System Risk Assessment</h3>
+          </div>
+          <div class="card-body" style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div style="border-left: 4px solid #EF4444; padding: 0.75rem 1rem; background: #FEF2F2; border-radius: 0 0.5rem 0.5rem 0;">
+              <div style="font-weight:700; font-size:0.8rem; color:#991B1B; margin-bottom:2px;">CRITICAL: LOW STOCK ALERT</div>
+              <div style="font-size:0.82rem; color:#7F1D1D;">16×20 Cotton Canvas: 4 units (threshold: 10). Restock immediately.</div>
+            </div>
+            <div style="border-left: 4px solid #F59E0B; padding: 0.75rem 1rem; background: #FFFBEB; border-radius: 0 0.5rem 0.5rem 0;">
+              <div style="font-weight:700; font-size:0.8rem; color:#92400E; margin-bottom:2px;">WARNING: SHIPPING DELAY</div>
+              <div style="font-size:0.82rem; color:#78350F;">South Zone regional couriers report delays. Recommend Delhivery Ground routing as default.</div>
+            </div>
+            <div style="border-left: 4px solid #3B82F6; padding: 0.75rem 1rem; background: #EFF6FF; border-radius: 0 0.5rem 0.5rem 0;">
+              <div style="font-weight:700; font-size:0.8rem; color:#1E40AF; margin-bottom:2px;">INFO: HOLIDAY DEMAND FORECAST</div>
+              <div style="font-size:0.82rem; color:#1E3A8A;">November/December Diwali & Holiday demand predicted to surge in Chennai & Bengaluru. Consider increasing canvas stock by 30%.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin AI Chatbot -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-robot" style="color:var(--pink);"></i> Ask Admin AI Assistant</h3>
+          </div>
+          <div class="card-body" style="display:flex; flex-direction:column; gap:0.5rem; height: 350px;">
+            <div id="admin-chat-messages" style="flex:1; overflow-y:auto; padding:0.75rem; background:#F8F4F6; border-radius:0.75rem; font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem;">
+              <div style="background:white; padding:0.6rem 0.8rem; border-radius:0.75rem 0.75rem 0.75rem 0; border:1px solid var(--blush); max-width:85%;">
+                👋 Hello Owner! Ask me why demand is predicted to be high, whether you should approve purchase proposals, or details about courier costs.
+              </div>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <input type="text" id="admin-chat-input" placeholder="Ask about sales, stock, or recommendations..." style="flex:1; padding:0.6rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.875rem;" onkeydown="if(event.key==='Enter') sendAdminChat()">
+              <button class="btn btn-primary" onclick="sendAdminChat()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── OWNER: ALL ORDERS ─── -->
+      <div class="view" id="view-owner-orders">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-clipboard-list" style="color:var(--pink);"></i> All Customer Orders</h3>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn btn-secondary btn-sm" onclick="loadAllOrders()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tracking #</th>
+                  <th>Customer</th>
+                  <th>Size / Frame</th>
+                  <th>Total</th>
+                  <th>Delivery Due</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody">
+                <tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--gray);">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── OWNER: AI RECOMMENDATIONS ─── -->
+      <div class="view" id="view-owner-ai">
+        <div class="section-header">
+          <h3><i class="fa-solid fa-robot" style="color:var(--pink); margin-right:8px;"></i>LangGraph AI Agent Recommendations</h3>
+          <button class="btn btn-gold" id="run-agents-btn" onclick="runAgents()">
+            <i class="fa-solid fa-play"></i> Run AI Agents Now
+          </button>
+        </div>
+        <div id="ai-recs-container">
+          <div class="empty">
+            <i class="fa-solid fa-robot"></i>
+            <h4>No Recommendations Yet</h4>
+            <p>Click "Run AI Agents Now" to generate AI recommendations from the multi-agent LangGraph workflow.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── PAINTER: JOBS ─── -->
+      <div class="view" id="view-painter-jobs">
+        <div style="display:grid; grid-template-columns: 2.2fr 1fr; gap:1.5rem; align-items: start;">
+          <div>
+            <div class="section-header">
+              <h3><i class="fa-solid fa-paint-brush" style="color:var(--pink); margin-right:8px;"></i>Assigned Portrait Jobs</h3>
+              <button class="btn btn-secondary" onclick="loadPainterJobs()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+            </div>
+            <div class="jobs-grid" id="painter-jobs-grid">
+              <div class="empty"><i class="fa-solid fa-paint-brush"></i><h4>Loading jobs...</h4></div>
+            </div>
+          </div>
+          <!-- Painter AI Assistant Chatbot -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-robot" style="color:var(--pink);"></i> Painter AI Assistant</h3>
+            </div>
+            <div class="card-body" style="display:flex; flex-direction:column; gap:0.5rem; height: 350px;">
+              <div id="painter-chat-messages" style="flex:1; overflow-y:auto; padding:0.75rem; background:#F8F4F6; border-radius:0.75rem; font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="background:white; padding:0.6rem 0.8rem; border-radius:0.75rem 0.75rem 0.75rem 0; border:1px solid var(--blush); max-width:85%;">
+                  👋 Hello Painter! Ask me about instructions clarification, custom stretching, or troubleshooting.
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="painter-chat-input" placeholder="Ask about techniques or instructions..." style="flex:1; padding:0.6rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.875rem;" onkeydown="if(event.key==='Enter') sendPainterChat()">
+                <button class="btn btn-primary" onclick="sendPainterChat()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── INVENTORY: STOCK ─── -->
+      <div class="view" id="view-inventory-stock">
+        <div style="display:grid; grid-template-columns: 2.2fr 1fr; gap:1.5rem; align-items: start;">
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-boxes-stacked" style="color:var(--pink);"></i> Material Stock Inventory</h3>
+              <div style="display:flex; gap:0.5rem;">
+                <button class="btn btn-secondary btn-sm" onclick="loadInventory()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                <button class="btn btn-primary btn-sm" onclick="checkAlerts()"><i class="fa-solid fa-bell"></i> Check Alerts</button>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th>Specification</th>
+                    <th>Stock</th>
+                    <th>Safety Limit</th>
+                    <th>Stock Level</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-tbody">
+                  <tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--gray);">Loading inventory...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Inventory AI Assistant Chatbot -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-robot" style="color:var(--pink);"></i> Inventory AI Advisor</h3>
+            </div>
+            <div class="card-body" style="display:flex; flex-direction:column; gap:0.5rem; height: 350px;">
+              <div id="inventory-chat-messages" style="flex:1; overflow-y:auto; padding:0.75rem; background:#F8F4F6; border-radius:0.75rem; font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="background:white; padding:0.6rem 0.8rem; border-radius:0.75rem 0.75rem 0.75rem 0; border:1px solid var(--blush); max-width:85%;">
+                  👋 Hello! Ask me about active stock levels, safety thresholds, or restock suggestions.
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="inventory-chat-input" placeholder="Ask about materials or alerts..." style="flex:1; padding:0.6rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.875rem;" onkeydown="if(event.key==='Enter') sendInventoryChat()">
+                <button class="btn btn-primary" onclick="sendInventoryChat()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SHIPPING: MAIN ─── -->
+      <div class="view" id="view-shipping-main">
+        <div style="display:grid; grid-template-columns: 1.2fr 1fr 1.2fr; gap:1.25rem; align-items: start;">
+          <!-- Rate Calculator -->
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-calculator" style="color:var(--pink);"></i> Live Courier Rate Comparison</h3></div>
+            <div class="card-body">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+                <div>
+                  <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--gray); display:block; margin-bottom:0.4rem;">Weight (lbs)</label>
+                  <input type="number" id="ship-weight" value="4.5" step="0.1" min="0.1" style="width:100%; padding:0.75rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.9rem;">
+                </div>
+                <div>
+                  <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--gray); display:block; margin-bottom:0.4rem;">ZIP Code</label>
+                  <input type="text" id="ship-zip" value="98101" style="width:100%; padding:0.75rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.9rem;">
+                </div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;" onclick="getShippingRates()">
+                <i class="fa-solid fa-magnifying-glass"></i> Get Live Quotes
+              </button>
+              <div id="rate-results" style="margin-top:1rem;"></div>
+            </div>
+          </div>
+          <!-- Packaging Guide -->
+          <div class="card">
+            <div class="card-header"><h3><i class="fa-solid fa-box" style="color:var(--gold);"></i> AI Packaging Guidelines</h3></div>
+            <div class="card-body">
+              <p style="font-size:0.82rem; color:var(--gray); margin-bottom:1rem;">AI-optimized packaging rules to prevent damage during transit:</p>
+              <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                <div style="background:var(--cream); border-radius:0.75rem; padding:1rem;">
+                  <div style="font-weight:700; font-size:0.85rem; margin-bottom:4px;">8" × 10" Paintings</div>
+                  <div style="font-size:0.8rem; color:var(--gray);">Small Kraft Box + 1 layer bubble wrap + corner protectors</div>
+                </div>
+                <div style="background:var(--cream); border-radius:0.75rem; padding:1rem;">
+                  <div style="font-weight:700; font-size:0.85rem; margin-bottom:4px;">16" × 20" Paintings</div>
+                  <div style="font-size:0.8rem; color:var(--gray);">Medium Frame Box + 2 layers bubble wrap + foam inserts</div>
+                </div>
+                <div style="background:var(--cream); border-radius:0.75rem; padding:1rem;">
+                  <div style="font-weight:700; font-size:0.85rem; margin-bottom:4px;">24" × 36" Paintings</div>
+                  <div style="font-size:0.8rem; color:var(--gray);">Heavy-Duty Carton + Double wrap + Wood support brackets</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Shipping AI Assistant Chatbot -->
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-robot" style="color:var(--pink);"></i> Shipping AI Advisor</h3>
+            </div>
+            <div class="card-body" style="display:flex; flex-direction:column; gap:0.5rem; height: 350px;">
+              <div id="shipping-chat-messages" style="flex:1; overflow-y:auto; padding:0.75rem; background:#F8F4F6; border-radius:0.75rem; font-size:0.85rem; display:flex; flex-direction:column; gap:0.5rem;">
+                <div style="background:white; padding:0.6rem 0.8rem; border-radius:0.75rem 0.75rem 0.75rem 0; border:1px solid var(--blush); max-width:85%;">
+                  👋 Hello! Ask me about Delhivery express costs, Blue Dart rates, or delivery dispatch queues.
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="shipping-chat-input" placeholder="Ask about routes or tracking..." style="flex:1; padding:0.6rem 1rem; border-radius:0.75rem; border:1.5px solid var(--blush); outline:none; font-size:0.875rem;" onkeydown="if(event.key==='Enter') sendShippingChat()">
+                <button class="btn btn-primary" onclick="sendShippingChat()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SHIPPING: READY TO SHIP ─── -->
+      <div class="view" id="view-shipping-ready">
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-box-open" style="color:var(--pink);"></i> Orders Ready for Dispatch</h3>
+            <button class="btn btn-secondary btn-sm" onclick="loadShippingReady()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tracking #</th>
+                  <th>Canvas Size</th>
+                  <th>Frame</th>
+                  <th>Delivery Due</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="shipping-ready-tbody">
+                <tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--gray);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /dashboard -->
+
+<!-- ─── MODALS ─── -->
+<!-- Assign Painter Modal -->
+<div class="modal-overlay" id="assign-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('assign-modal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-title"><i class="fa-solid fa-paint-brush" style="color:var(--pink);margin-right:8px;"></i>Assign Painter</div>
+    <p style="color:var(--gray); font-size:0.875rem; margin-bottom:1.25rem;">Select a painter to assign to <strong id="assign-order-id"></strong></p>
+    <select class="modal-select" id="painter-select">
+      <option value="">Loading painters...</option>
+    </select>
+    <button class="btn btn-primary" style="width:100%;" onclick="confirmAssignPainter()">
+      <i class="fa-solid fa-check"></i> Assign Painter
+    </button>
+    <input type="hidden" id="assign-order-int-id">
+  </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal-overlay" id="status-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('status-modal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-title"><i class="fa-solid fa-arrows-rotate" style="color:var(--pink);margin-right:8px;"></i>Update Order Status</div>
+    <p style="color:var(--gray); font-size:0.875rem; margin-bottom:1.25rem;">Update status for <strong id="status-order-id"></strong></p>
+    <select class="modal-select" id="status-select">
+      <option value="Pending">Pending</option>
+      <option value="Accepted">Accepted</option>
+      <option value="Painting">Painting</option>
+      <option value="Completed">Completed</option>
+      <option value="Packed">Packed</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+    <button class="btn btn-primary" style="width:100%;" onclick="confirmStatusUpdate()">Update Status</button>
+    <input type="hidden" id="status-order-int-id">
+  </div>
+</div>
+
+<!-- Restock Modal -->
+<div class="modal-overlay" id="restock-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('restock-modal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-title"><i class="fa-solid fa-truck-ramp-box" style="color:var(--gold);margin-right:8px;"></i>Restock Material</div>
+    <p style="color:var(--gray); font-size:0.875rem; margin-bottom:1.25rem;">Add stock units to: <strong id="restock-item-name"></strong></p>
+    <label style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--gray); display:block; margin-bottom:0.4rem;">Quantity to Add</label>
+    <input type="number" class="modal-input" id="restock-qty" value="10" min="1">
+    <button class="btn btn-gold" style="width:100%;" onclick="confirmRestock()">
+      <i class="fa-solid fa-plus"></i> Add Stock
+    </button>
+    <input type="hidden" id="restock-item-id">
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<!-- ─── JAVASCRIPT ─── -->
+<script>
+const API = 'http://localhost:8000/api/v1';
+let token = '';
+let activeRole = '';
+let userInfo = null;
+let painters = [];
+
+// ─── LOGIN ───
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const pwd = document.getElementById('login-password').value;
+  if (!email || !pwd) { showToast('Please fill in both fields.', 'error'); return; }
+  const btn = document.getElementById('login-btn');
+  btn.innerHTML = '<span class="spinner"></span> Authenticating...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pwd })
+    });
+    if (!res.ok) throw new Error('Invalid credentials');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    token = data.access_token;
+    activeRole = data.role;
+
+    const me = await fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+    userInfo = await me.json();
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('show');
+    document.getElementById('sb-name').textContent = `${userInfo.first_name} ${userInfo.last_name}`;
+    document.getElementById('sb-email').textContent = email;
+    document.getElementById('sb-role').textContent = activeRole;
+
+    setupDashboard();
+  } catch (e) {
+    showToast('Authentication failed. Check credentials.', 'error');
+  } finally {
+    btn.innerHTML = '<i class="fa-solid fa-lock"></i> Authenticate Session';
+    btn.disabled = false;
+  }
+}
+
+function logout() {
+  token = ''; activeRole = ''; userInfo = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('dashboard').classList.remove('show');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
+}
+
+function setupDashboard() {
+  const navMap = {
+    Owner: 'owner-nav', Painter: 'painter-nav',
+    InventoryManager: 'inventory-nav', ShippingManager: 'shipping-nav'
+  };
+  Object.values(navMap).forEach(id => document.getElementById(id).style.display = 'none');
+  const nav = navMap[activeRole];
+  if (nav) document.getElementById(nav).style.display = 'flex';
+
+  if (activeRole === 'Owner') {
+    showView('owner-kpi');
+    loadOwnerKPIs();
+    loadAllOrders();
+    loadPaintersList();
+    loadAIRecs();
+  } else if (activeRole === 'Painter') {
+    showView('painter-jobs');
+    loadPainterJobs();
+  } else if (activeRole === 'InventoryManager') {
+    showView('inventory-stock');
+    loadInventory();
+  } else if (activeRole === 'ShippingManager') {
+    showView('shipping-main');
+    loadShippingReady();
+  }
+}
+
+// ─── VIEWS ───
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const titleMap = {
+    'owner-kpi': 'Owner Dashboard', 'owner-orders': 'All Orders',
+    'owner-ai': 'AI Agent Recommendations', 'painter-jobs': 'Assigned Jobs',
+    'inventory-stock': 'Stock Inventory', 'shipping-main': 'Fulfillment Hub',
+    'shipping-ready': 'Ready to Ship'
+  };
+  document.getElementById('topbar-title').textContent = titleMap[id] || 'Dashboard';
+
+  // Update topbar actions
+  const tb = document.getElementById('topbar-actions');
+  tb.innerHTML = '';
+  if (id === 'owner-kpi') {
+    tb.innerHTML = `<button class="btn btn-secondary" onclick="loadOwnerKPIs()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>`;
+  } else if (id === 'owner-ai') {
+    tb.innerHTML = `<button class="btn btn-gold" onclick="runAgents()"><i class="fa-solid fa-play"></i> Run AI Agents</button>`;
+  }
+}
+
+// ─── OWNER KPIs ───
+async function loadOwnerKPIs() {
+  try {
+    const res = await fetch(`${API}/admin/kpis`, { headers: { Authorization: `Bearer ${token}` } });
+    const d = await res.json();
+    document.getElementById('kpi-orders').textContent = d.total_orders;
+    document.getElementById('kpi-revenue').textContent = '₹' + d.total_revenue.toLocaleString('en-IN');
+    document.getElementById('kpi-profit').textContent = '₹' + d.net_profit.toLocaleString('en-IN');
+    document.getElementById('kpi-painters').textContent = d.active_painters_count;
+    document.getElementById('kpi-customers').textContent = d.total_customers;
+    document.getElementById('kpi-pending').textContent = d.pending_orders;
+  } catch { showToast('Failed to load KPIs.', 'error'); }
+}
+
+// ─── PAINTERS LIST ───
+async function loadPaintersList() {
+  try {
+    const res = await fetch(`${API}/admin/painters`, { headers: { Authorization: `Bearer ${token}` } });
+    painters = await res.json();
+    const sel = document.getElementById('painter-select');
+    sel.innerHTML = '<option value="">— Select a Painter —</option>' +
+      painters.map(p => `<option value="${p.id}">${p.first_name} ${p.last_name}</option>`).join('');
+  } catch {}
+}
+
+// ─── ALL ORDERS ───
+async function loadAllOrders() {
+  const tbody = document.getElementById('orders-tbody');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray);">Loading...</td></tr>';
+  try {
+    const res = await fetch(`${API}/admin/orders`, { headers: { Authorization: `Bearer ${token}` } });
+    const orders = await res.json();
+    if (!orders.length) {
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><i class="fa-solid fa-box-open"></i><h4>No Orders</h4></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = orders.map(o => {
+      const cName = o.customer ? `${o.customer.first_name} ${o.customer.last_name}` : 'N/A';
+      const spec = o.spec ? `${o.spec.size_inches} · ${o.spec.frame_type}` : 'N/A';
+      const due = new Date(o.delivery_date).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'2-digit' });
+      return `<tr>
+        <td><strong>${o.tracking_number}</strong></td>
+        <td>${cName}</td>
+        <td style="color:var(--gray); font-size:0.82rem;">${spec}</td>
+        <td><strong>₹${parseFloat(o.total_price).toLocaleString('en-IN')}</strong></td>
+        <td style="color:var(--gray); font-size:0.82rem;">${due}</td>
+        <td><span class="badge badge-${o.status}">${o.status}</span></td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-secondary btn-sm" onclick="openStatusModal(${o.id},'${o.tracking_number}','${o.status}')">
+              <i class="fa-solid fa-arrows-rotate"></i> Status
+            </button>
+            ${(!o.spec?.assigned_painter_id) ? `<button class="btn btn-primary btn-sm" onclick="openAssignModal(${o.id},'${o.tracking_number}')">
+              <i class="fa-solid fa-user-plus"></i> Assign
+            </button>` : `<span style="font-size:0.75rem;color:var(--success);font-weight:700;"><i class="fa-solid fa-check"></i> Assigned</span>`}
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch (e) { showToast('Failed to load orders: ' + e.message, 'error'); }
+}
+
+// ─── AI RECOMMENDATIONS ───
+async function loadAIRecs() {
+  try {
+    const res = await fetch(`${API}/admin/recommendations`, { headers: { Authorization: `Bearer ${token}` } });
+    const recs = await res.json();
+    renderRecs(recs);
+  } catch {}
+}
+
+function renderRecs(recs) {
+  const container = document.getElementById('ai-recs-container');
+  if (!recs.length) {
+    container.innerHTML = `<div class="empty"><i class="fa-solid fa-robot"></i><h4>No AI Recommendations</h4><p>Run the AI Agents to generate recommendations from the LangGraph workflow.</p></div>`;
+    return;
+  }
+  container.innerHTML = recs.map(r => {
+    const costColor = r.cost_impact < 0 ? 'color:#EF4444' : 'color:#10B981';
+    return `<div class="rec-card">
+      <div class="rec-card-header">
+        <span class="badge badge-${r.agent_type}">${r.agent_type} Agent</span>
+        <span style="font-size:0.78rem;color:var(--gray);">Confidence: ${Math.round(r.confidence_score * 100)}%</span>
+      </div>
+      <div class="rec-text">"${r.recommendation_text}"</div>
+      <div class="rec-meta">
+        <div class="rec-impacts">
+          <span>Cost: <strong style="${costColor};">₹${Math.abs(r.cost_impact).toLocaleString('en-IN')}</strong></span>
+          <span>Profit: <strong style="color:#10B981;">+₹${r.profit_impact.toLocaleString('en-IN')}</strong></span>
+        </div>
+        ${r.status === 'Pending'
+          ? `<div class="rec-actions">
+              <button class="btn btn-success btn-sm" onclick="actRec(${r.id},'approve')"><i class="fa-solid fa-check"></i> Approve</button>
+              <button class="btn btn-danger btn-sm" onclick="actRec(${r.id},'reject')"><i class="fa-solid fa-xmark"></i> Reject</button>
+            </div>`
+          : `<span class="badge badge-${r.status.toLowerCase()}">${r.status}</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function runAgents() {
+  const btn = document.getElementById('run-agents-btn');
+  btn.innerHTML = '<span class="spinner"></span> Running Agents...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/chat/admin/run-agents`, { method:'POST', headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(`✓ ${data.message}`, 'success');
+    await loadAIRecs();
+  } catch { showToast('Failed to run agents. Make sure backend is active.', 'error'); }
+  finally {
+    btn.innerHTML = '<i class="fa-solid fa-play"></i> Run AI Agents Now';
+    btn.disabled = false;
+  }
+}
+
+async function actRec(id, action) {
+  try {
+    const res = await fetch(`${API}/admin/recommendations/${id}/${action}`, { method:'POST', headers:{ Authorization:`Bearer ${token}` } });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message + (data.action_taken ? ': ' + data.action_taken : ''), 'success');
+    loadAIRecs();
+    loadOwnerKPIs();
+  } catch { showToast('Action failed.', 'error'); }
+}
+
+// ─── ASSIGN PAINTER ───
+function openAssignModal(orderId, trackNum) {
+  document.getElementById('assign-order-id').textContent = trackNum;
+  document.getElementById('assign-order-int-id').value = orderId;
+  document.getElementById('assign-modal').classList.add('open');
+}
+
+async function confirmAssignPainter() {
+  const orderId = document.getElementById('assign-order-int-id').value;
+  const painterId = document.getElementById('painter-select').value;
+  if (!painterId) { showToast('Please select a painter.', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/admin/orders/${orderId}/assign-painter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ painter_id: parseInt(painterId) })
+    });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message, 'success');
+    closeModal('assign-modal');
+    loadAllOrders();
+  } catch { showToast('Assignment failed.', 'error'); }
+}
+
+// ─── STATUS UPDATE ───
+function openStatusModal(orderId, trackNum, currentStatus) {
+  document.getElementById('status-order-id').textContent = trackNum;
+  document.getElementById('status-order-int-id').value = orderId;
+  document.getElementById('status-select').value = currentStatus;
+  document.getElementById('status-modal').classList.add('open');
+}
+
+async function confirmStatusUpdate() {
+  const orderId = document.getElementById('status-order-int-id').value;
+  const newStatus = document.getElementById('status-select').value;
+  try {
+    const res = await fetch(`${API}/admin/orders/${orderId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ status: newStatus })
+    });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message, 'success');
+    closeModal('status-modal');
+    loadAllOrders();
+    loadOwnerKPIs();
+  } catch { showToast('Status update failed.', 'error'); }
+}
+
+// ─── PAINTER JOBS ───
+async function loadPainterJobs() {
+  const grid = document.getElementById('painter-jobs-grid');
+  grid.innerHTML = '<div class="empty"><i class="fa-solid fa-spinner fa-spin"></i><h4>Loading...</h4></div>';
+  try {
+    const res = await fetch(`${API}/painter/jobs`, { headers: { Authorization: `Bearer ${token}` } });
+    const jobs = await res.json();
+    if (!jobs.length) {
+      grid.innerHTML = `<div class="empty"><i class="fa-solid fa-paint-brush"></i><h4>No Jobs Assigned</h4><p>You have no portrait painting jobs assigned yet.</p></div>`;
+      return;
+    }
+    grid.innerHTML = jobs.map(j => `
+      <div class="job-card">
+        <div class="job-card-header">
+          <strong>Order #${j.order_id}</strong>
+          <span class="badge badge-Painting">Assigned</span>
+        </div>
+        <div class="job-detail"><strong>Canvas Size:</strong> ${j.size_inches}</div>
+        <div class="job-detail"><strong>Frame Type:</strong> ${j.frame_type}</div>
+        <div class="job-desc"><i class="fa-solid fa-quote-left" style="color:var(--pink);font-size:0.75rem;margin-right:4px;"></i>${j.custom_description}</div>
+        <div style="display:flex; gap:0.75rem; margin-bottom:0.75rem;">
+          <a href="${j.image_url}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">
+            <i class="fa-solid fa-eye"></i> View Reference
+          </a>
+          <a href="${j.image_url}" download class="btn btn-secondary btn-sm" style="text-decoration:none;">
+            <i class="fa-solid fa-download"></i> Download
+          </a>
+        </div>
+        <div class="job-actions">
+          <button class="btn btn-success" style="flex:1;" onclick="completePainterJob(${j.id})">
+            <i class="fa-solid fa-check-double"></i> Mark Completed
+          </button>
+        </div>
+      </div>`).join('');
+  } catch { showToast('Failed to load jobs.', 'error'); }
+}
+
+async function completePainterJob(specId) {
+  try {
+    const res = await fetch(`${API}/painter/jobs/${specId}/complete`, { method:'POST', headers:{ Authorization:`Bearer ${token}` } });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message, 'success');
+    loadPainterJobs();
+  } catch { showToast('Could not mark as complete.', 'error'); }
+}
+
+// ─── INVENTORY ───
+async function loadInventory() {
+  const tbody = document.getElementById('inventory-tbody');
+  try {
+    const res = await fetch(`${API}/inventory/status`, { headers: { Authorization: `Bearer ${token}` } });
+    const items = await res.json();
+    tbody.innerHTML = items.map(i => {
+      const pct = Math.min(Math.round((i.quantity_available / Math.max(i.safety_threshold * 2, 1)) * 100), 100);
+      const isLow = i.quantity_available < i.safety_threshold;
+      return `<tr>
+        <td><strong>${i.material_name}</strong></td>
+        <td style="color:var(--gray);">${i.type_spec}</td>
+        <td><strong>${i.quantity_available}</strong> units</td>
+        <td style="color:var(--gray);">${i.safety_threshold} units</td>
+        <td style="width:120px;">
+          <div class="stock-bar"><div class="stock-fill${isLow?' low':''}" style="width:${pct}%"></div></div>
+          <div style="font-size:0.72rem;color:var(--gray);margin-top:2px;">${pct}%</div>
+        </td>
+        <td><span class="badge badge-${isLow?'Low':'Normal'}">${isLow?'Low Stock':'In Stock'}</span></td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openRestockModal(${i.id},'${i.type_spec}')">
+            <i class="fa-solid fa-plus"></i> Restock
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch { showToast('Failed to load inventory.', 'error'); }
+}
+
+async function checkAlerts() {
+  try {
+    const res = await fetch(`${API}/inventory/alerts`, { headers: { Authorization: `Bearer ${token}` } });
+    const alerts = await res.json();
+    if (!alerts.length) showToast('✓ All inventory levels are healthy!', 'success');
+    else showToast(`⚠ ${alerts.length} material(s) below safety threshold!`, 'error');
+  } catch { showToast('Failed to check alerts.', 'error'); }
+}
+
+// ─── RESTOCK ───
+function openRestockModal(id, name) {
+  document.getElementById('restock-item-id').value = id;
+  document.getElementById('restock-item-name').textContent = name;
+  document.getElementById('restock-qty').value = 10;
+  document.getElementById('restock-modal').classList.add('open');
+}
+
+async function confirmRestock() {
+  const id = document.getElementById('restock-item-id').value;
+  const qty = parseInt(document.getElementById('restock-qty').value);
+  if (!qty || qty < 1) { showToast('Enter a valid quantity.', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/inventory/restock/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ quantity: qty })
+    });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message, 'success');
+    closeModal('restock-modal');
+    loadInventory();
+  } catch { showToast('Restock failed.', 'error'); }
+}
+
+// ─── SHIPPING RATES ───
+async function getShippingRates() {
+  const weight = document.getElementById('ship-weight').value;
+  const zip = document.getElementById('ship-zip').value;
+  const results = document.getElementById('rate-results');
+  results.innerHTML = '<div style="color:var(--gray);text-align:center;padding:1rem;">Fetching rates...</div>';
+  try {
+    const res = await fetch(`${API}/shipping/rates?weight_lbs=${weight}&zip_code=${zip}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    results.innerHTML = data.quotes.map(q => `
+      <div class="rate-card${q.recommended?' recommended':''}">
+        <div style="flex:1;">
+          <div class="rate-carrier">${q.carrier} ${q.recommended ? '⭐ Recommended' : ''}</div>
+          <div class="rate-days">Est. ${q.delivery_days} day${q.delivery_days>1?'s':''} delivery</div>
+          <div style="font-size:0.75rem; color:var(--gray); margin-top:4px; font-style:italic;">${q.reason}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <div class="rate-price">₹${q.cost.toFixed(2)}</div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Shipping label printed for ${q.carrier}!','success')">
+            <i class="fa-solid fa-print"></i> Ship
+          </button>
+        </div>
+      </div>`).join('');
+  } catch { results.innerHTML = '<div style="color:var(--error);text-align:center;">Failed to fetch rates.</div>'; }
+}
+
+// ─── SHIPPING READY ───
+async function loadShippingReady() {
+  const tbody = document.getElementById('shipping-ready-tbody');
+  try {
+    const res = await fetch(`${API}/orders/shipping/ready`, { headers: { Authorization: `Bearer ${token}` } });
+    const orders = await res.json();
+    if (!orders.length) {
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><i class="fa-solid fa-box-open"></i><h4>No orders ready to ship</h4></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = orders.map(o => `<tr>
+      <td><strong>${o.tracking_number}</strong></td>
+      <td>${o.size_inches}</td>
+      <td>${o.frame_type}</td>
+      <td style="color:var(--gray); font-size:0.82rem;">${new Date(o.delivery_date).toLocaleDateString()}</td>
+      <td><span class="badge badge-${o.status}">${o.status}</span></td>
+      <td>
+        <button class="btn btn-primary btn-sm" onclick="markShipped(${o.id})">
+          <i class="fa-solid fa-truck"></i> Mark Shipped
+        </button>
+      </td>
+    </tr>`).join('');
+  } catch { showToast('Failed to load shipments.', 'error'); }
+}
+
+async function markShipped(orderId) {
+  try {
+    const res = await fetch(`${API}/orders/shipping/${orderId}/mark-shipped`, { method:'POST', headers:{ Authorization:`Bearer ${token}` } });
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    showToast(data.message, 'success');
+    loadShippingReady();
+  } catch { showToast('Failed to mark as shipped.', 'error'); }
+}
+
+// ─── MODALS ───
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.className = `toast show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+// ─── ADMIN AI CHAT ───
+async function sendAdminChat() {
+  const input = document.getElementById('admin-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const msgs = document.getElementById('admin-chat-messages');
+  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--pink); color: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0 0.75rem; max-width: 85%;">${escapeHtml(text)}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div id="${typingId}" class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/chat/admin/chat`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ query: text, role: 'Owner' })
+    });
+    if (!res.ok) throw new Error('Query failed');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0.75rem 0; border: 1px solid var(--blush); max-width: 85%;">${marked.parse(data.response)}<div style="font-size:0.7rem; color:var(--gray); margin-top:4px;">Source: WingsArtz RAG AI</div></div>`;
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: #FEE2E2; color: #991B1B; padding: 0.6rem 0.8rem; border-radius: 0.75rem; max-width: 85%;">⚠️ Query failed. Access restricted to Owner credentials.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ─── PAINTER AI CHAT ───
+async function sendPainterChat() {
+  const input = document.getElementById('painter-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const msgs = document.getElementById('painter-chat-messages');
+  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--pink); color: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0 0.75rem; max-width: 85%;">${escapeHtml(text)}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div id="${typingId}" class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/chat/painter/chat`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ query: text, role: 'Painter' })
+    });
+    if (!res.ok) throw new Error('Query failed');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0.75rem 0; border: 1px solid var(--blush); max-width: 85%;">${marked.parse(data.response)}<div style="font-size:0.7rem; color:var(--gray); margin-top:4px;">Source: WingsArtz RAG AI</div></div>`;
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: #FEE2E2; color: #991B1B; padding: 0.6rem 0.8rem; border-radius: 0.75rem; max-width: 85%;">⚠️ Query failed. Financial or administrative details blocked.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── INVENTORY AI CHAT ───
+async function sendInventoryChat() {
+  const input = document.getElementById('inventory-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const msgs = document.getElementById('inventory-chat-messages');
+  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--pink); color: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0 0.75rem; max-width: 85%;">${escapeHtml(text)}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div id="${typingId}" class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/chat/inventory/chat`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ query: text, role: 'InventoryManager' })
+    });
+    if (!res.ok) throw new Error('Query failed');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0.75rem 0; border: 1px solid var(--blush); max-width: 85%;">${marked.parse(data.response)}<div style="font-size:0.7rem; color:var(--gray); margin-top:4px;">Source: WingsArtz RAG AI</div></div>`;
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: #FEE2E2; color: #991B1B; padding: 0.6rem 0.8rem; border-radius: 0.75rem; max-width: 85%;">⚠️ Query failed. Financial details blocked.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ─── SHIPPING AI CHAT ───
+async function sendShippingChat() {
+  const input = document.getElementById('shipping-chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const msgs = document.getElementById('shipping-chat-messages');
+  msgs.innerHTML += `<div style="align-self: flex-end; background: var(--pink); color: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0 0.75rem; max-width: 85%;">${escapeHtml(text)}</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  const typingId = 'typing-' + Date.now();
+  msgs.innerHTML += `<div id="${typingId}" class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/chat/shipping/chat`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ query: text, role: 'ShippingManager' })
+    });
+    if (!res.ok) throw new Error('Query failed');
+    const data = await res.json();
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: white; padding: 0.6rem 0.8rem; border-radius: 0.75rem 0.75rem 0.75rem 0; border: 1px solid var(--blush); max-width: 85%;">${marked.parse(data.response)}<div style="font-size:0.7rem; color:var(--gray); margin-top:4px;">Source: WingsArtz RAG AI</div></div>`;
+  } catch (err) {
+    if (typeof typingId !== 'undefined') { document.getElementById(typingId)?.remove(); }
+    msgs.innerHTML += `<div style="background: #FEE2E2; color: #991B1B; padding: 0.6rem 0.8rem; border-radius: 0.75rem; max-width: 85%;">⚠️ Query failed. Financial details blocked.</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
+</body>
+</html>

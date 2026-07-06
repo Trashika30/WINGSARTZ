@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+wingsartz.db
+backend/static/chroma_db/
+backend/static/uploads/
