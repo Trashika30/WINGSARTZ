@@ -59,7 +59,7 @@ def chat_support(req: ChatRequest, db: Session = Depends(get_db)):
     system_prompt = (
         "You are the WingsArtz Storefront Customer Support Assistant.\n"
         "Answer customer questions about sizing, framing, refunds, shipping, and order tracking.\n"
-        "Keep responses concise and friendly. Format key info in bullet points.\n"
+        "CRITICAL: Optimize for minimal output tokens. Be extremely concise. Avoid conversational filler. Use brief bullet points.\n"
         f"WingsArtz Policies & Guidelines:\n{retrieved}\n"
         "Always respond in Indian Rupees (₹)."
     )
@@ -283,7 +283,7 @@ def inventory_chat(
     system_prompt = (
         "You are the WingsArtz Inventory Studio Advisor.\n"
         "Help the inventory team manage stock levels, safety thresholds, and explain material properties.\n"
-        "Provide crisp, clear reorder quantities in bullet points.\n"
+        "CRITICAL: Optimize for minimal output tokens. Be extremely concise. Avoid conversational filler. Provide crisp, clear reorder quantities in brief bullet points.\n"
         f"Inventory Stock Status:\n{low_desc}\n"
         f"Policy Context:\n{retrieved}\n"
     )
@@ -446,7 +446,7 @@ def shipping_chat(
     system_prompt = (
         "You are the WingsArtz Courier & Logistics Optimizer.\n"
         "Help the shipping team find the best courier routes, check delivery addresses, and organize dispatch.\n"
-        "Provide crisp suggestions in clear bullet points using Indian Rupees (₹).\n"
+        "CRITICAL: Optimize for minimal output tokens. Be extremely concise. Avoid conversational filler. Provide crisp suggestions in clear bullet points using Indian Rupees (₹).\n"
         f"Orders ready to pack: {len(completed_orders)} | Orders ready to ship: {len(packed_orders)}\n"
         f"Policy Context:\n{retrieved}\n"
     )

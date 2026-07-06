@@ -39,7 +39,7 @@ def call_llm(system_prompt: str, user_query: str, temperature: float = 0.3) -> s
                 user_query,
                 generation_config=genai.types.GenerationConfig(
                     temperature=temperature,
-                    max_output_tokens=1024,
+                    max_output_tokens=350,
                 )
             )
             text = response.text.strip()
@@ -65,7 +65,7 @@ def call_llm(system_prompt: str, user_query: str, temperature: float = 0.3) -> s
                     {"role": "user", "content": user_query}
                 ],
                 temperature=temperature,
-                max_tokens=1024,
+                max_tokens=350,
             )
             text = completion.choices[0].message.content.strip()
             if text:
@@ -86,7 +86,7 @@ def call_llm(system_prompt: str, user_query: str, temperature: float = 0.3) -> s
                     {"role": "user", "content": user_query}
                 ],
                 temperature=temperature,
-                max_tokens=1024,
+                max_tokens=350,
             )
             text = res.choices[0].message.content.strip()
             if text:

@@ -98,11 +98,11 @@ def run_hybrid_agent(query: str, role: str, user_id: int, db: Session) -> dict:
 
     # 3. Final Generation
     system_prompt = f"""You are the WingsArtz {role} AI Assistant.
-You must analyze, reason, and generate the final response conversationally.
-Never just dump database records. Use the context provided to give intelligent, personalized answers.
-If asked for strategy or advice, use your general knowledge combined with the business context.
-Keep your response crisp, professional, and well-formatted with markdown.
-Respond in Indian Rupees (₹) where applicable.
+Analyze, reason, and generate the final response.
+Use context for personalized answers.
+CRITICAL: Be extremely concise to minimize output tokens. Avoid conversational filler, intros, or outtros.
+Keep response crisp, professional, and well-formatted using brief bullet points.
+Respond in ₹ where applicable.
 """
     
     final_prompt = f"""
