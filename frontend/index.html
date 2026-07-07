@@ -1228,9 +1228,6 @@ async function sendChat() {
 
   // Typing indicator
   const typingId = 'typing-' + Date.now();
-  msgs.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
-  msgs.scrollTop = msgs.scrollHeight;
-  const typingId = 'typing-' + Date.now();
   msgs.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-bubble" style="display:flex;gap:4px;align-items:center;min-height:24px;"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
   msgs.scrollTop = msgs.scrollHeight;
 
